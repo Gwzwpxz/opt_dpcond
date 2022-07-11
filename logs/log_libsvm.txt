@@ -1,0 +1,15 @@
+                Mat   Size      Cbef      Caft   Reduce 
+  YearPredictionMSD     90 5.233e+06 4.702e+02 0.999910 
+YearPredictionMSD.t     90 5.521e+06 3.599e+05 0.934816 
+  abalone_scale.txt      8 2.419e+03 2.038e+03 0.157291 
+  bodyfat_scale.txt     14 1.281e+03 6.691e+02 0.477475 
+         cadata.txt      8 8.982e+06 7.632e+03 0.999150 
+ cpusmall_scale.txt     12 2.000e+04 6.325e+03 0.683813 
+       eunite2001.t     16 5.245e+07 8.530e+03 0.999837 
+     eunite2001.txt     16 6.730e+07 3.591e+03 0.999947 
+  housing_scale.txt     13 1.539e+02 8.322e+01 0.459371 
+       mg_scale.txt      6 1.067e+01 1.003e+01 0.059988 
+      mpg_scale.txt      7 1.425e+02 1.072e+02 0.247842 
+    pyrim_scale.txt     27 4.910e+07 3.307e+03 0.999933 
+ space_ga_scale.txt      6 1.061e+03 7.296e+02 0.312041 
+triazines_scale.txt     60 2.458e+07 1.546e+07 0.371034 
