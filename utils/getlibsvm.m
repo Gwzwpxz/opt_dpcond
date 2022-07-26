@@ -15,10 +15,14 @@ data.name = fname;
 
 save(fullfile(target, "mat", fname + "-opt.mat"), "data");
 
-% Build SDPA
-[A, b, c, K] = getsedumi(data.M);
+% Build SDPA LHS
+[A, b, c, K] = getsedumi(data.M, "L");
 param.printlevel = 0;
-writesdpa(fullfile(target, "sdp", fname + ".dat-s"), A, b, c, K, param);
+writesdpa(fullfile(target, "sdp", fname + "-L.dat-s"), A, b, c, K, param);
+
+% Build SDPA RHS
+[A, b, c, K] = getsedumi(data.X, "R");
+writesdpa(fullfile(target, "sdp", fname + "-R.dat-s"), A, b, c, K, param);
 
 % matrix  dim  cond  perturb
 fprintf("%30s %8d %10.3e %10.3e \n", fname, size(data.M, 1), data.cond, data.perturb);

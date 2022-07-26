@@ -2,8 +2,9 @@ function [data] = getraw(X, perturb)
 % Equilibrate and get raw data from X 
 
 XTX = X' * X;
-data.X = X;
+data.X = X; % + sprandsym(11107, 0.00000005) * 1e+04;
 data.M = XTX;
+
 data.perturb = 0.0;
 data.cond = condest(XTX);
 

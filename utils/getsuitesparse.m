@@ -23,10 +23,14 @@ data.name = matname;
 
 save(fullfile(target, "mat", matname + "-opt.mat"), "data");
 
-% Build SDPA
-[A, b, c, K] = getsedumi(data.M);
+% Build SDPA for LHS pre-conditioning
+[A, b, c, K] = getsedumi(data.M, "L");
 param.printlevel = 0;
-writesdpa(fullfile(target, "sdp", matname + ".dat-s"), A, b, c, K, param);
+writesdpa(fullfile(target, "sdp", matname + "-L.dat-s"), A, b, c, K, param);
+
+% % Build SDPA for RHS pre-conditioning
+% [A, b, c, K] = getsedumi(data.X, "R");
+% writesdpa(fullfile(target, "sdp", matname + "-R.dat-s"), A, b, c, K, param);
 
 % matrix  dim  cond  perturb
 fprintf("%30s %8d %10.3e %10.3e \n", matname, size(data.M, 1), data.cond, data.perturb);
