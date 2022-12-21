@@ -130,3 +130,6 @@ dmypy.json
 *.mat
 .DS_Store
 datasets/libsvm
+Optimal Diagonal Preconditioning
+datasets
+utils/libsvm-3.25
