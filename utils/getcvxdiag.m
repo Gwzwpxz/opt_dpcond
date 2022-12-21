@@ -7,7 +7,7 @@ end % End if
 
 [m, n] = size(X);
 if type == "L"
-    cvx_begin sdp
+    cvx_begin sdp quiet
         cvx_solver sdpt3
         variable d(n, 1) nonnegative
         variable tau nonnegative
