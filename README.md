@@ -126,4 +126,4 @@ Please contact `gwz@163.shufe.edu.cn` for questions on the toolbox.
 
 **Cite as**
 
-> Qu, Z., Gao, W., Hinder, O., Ye, Y., & Zhou, Z. (2022). Optimal Diagonal Preconditioning: Theory and Practice. *arXiv preprint arXiv:2209.00809*.
+> Qu, Z., Gao, W., Hinder, O., Ye, Y., & Zhou, Z. (2022). Optimal Diagonal Preconditioning. *arXiv preprint arXiv:2209.00809*.
