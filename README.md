@@ -71,7 +71,7 @@ Installation completes. Check README.md for usage details.
 
 **Usage**
 
-The optimal preconditioning toolbox provides several utilities that allows users to 
+The optimal preconditioning toolbox provides several utilities that allow users to 
 
 - Compute the optimal Left/Right/Two-sided preconditioner
 - Export the Left/Right preconditioning SDP to standard SDPA format
@@ -122,8 +122,8 @@ and obtain the mexfile for CG implementation of multiple RHSs.
 
 **Contact**
 
-Please contact `gwz@163.shufe.edu.cn` on questions of the toolbox.
+Please contact `gwz@163.shufe.edu.cn` for questions on the toolbox.
 
 **Cite as**
 
-> Qu, Z., Gao, W., Hinder, O., Ye, Y., & Zhou, Z. (2022). Optimal Diagonal Preconditioning: Theory and Practice. *arXiv preprint arXiv:2209.00809*.
+> Qu, Z., Gao, W., Hinder, O., Ye, Y., & Zhou, Z. (2022). Optimal Diagonal Preconditioning. *arXiv preprint arXiv:2209.00809*.
