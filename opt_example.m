@@ -22,7 +22,7 @@ DEopt = optprecond(DEprob);
 
 % Get performance
 fprintf("Condition number of X  : %5.2e \n", cond(full(X)));
-fprintf("Condition number of EX : %5.2e \n", cond(full(Eopt.pX)));
+fprintf("Condition number of XE : %5.2e \n", cond(full(Eopt.pX)));
 fprintf("Condition number of DX : %5.2e \n", cond(full(Dopt.pX)));
 fprintf("Condition number of DXE: %5.2e \n", cond(full(DEopt.pX)));
 
