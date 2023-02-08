@@ -61,7 +61,7 @@ Solving a two-sided preconditioning problem using bisection
  5.156e+05  3.125e+04 
  5.234e+05  1.562e+04 
 Condition number of X  : 2.06e+03 
-Condition number of EX : 1.62e+03 
+Condition number of XE : 1.62e+03 
 Condition number of DX : 1.28e+03 
 Condition number of DXE: 7.23e+02 
 Exporting SDP to ./Eprob-R.dat-s 
@@ -81,7 +81,7 @@ The basic usage  can be demonstrated by the following lines of code
 ```matlab
 % Choose preconditioning type
 param.ptype = 'R'; 
-% Generate preconditioning problem
+% Generate preconditioning problem. X is the user data
 prob = getoptprob(X, param); 
 % Solve the preconditioning problem
 sol = optprecond(prob); 
