@@ -5,7 +5,7 @@ if nargin == 1
     type = "L";
 end % End if
 
-[m, n] = size(X);
+[~, n] = size(X);
 if type == "L"
     cvx_begin sdp quiet
         cvx_solver sdpt3
@@ -13,10 +13,10 @@ if type == "L"
         variable tau nonnegative
         maximize tau
         subject to
-        tau <= 1.0;
-        X - diag(d) >= 0;
-        diag(d) - X * tau >= 0;
-        d >= 0;
+        tau <= 1.0; %#ok
+        X - diag(d) >= 0; %#ok
+        diag(d) - X * tau >= 0; %#ok
+        d >= 0; %#ok
     cvx_end
 elseif type == "R"
     cvx_begin sdp quiet
@@ -25,23 +25,14 @@ elseif type == "R"
     variable tau
     maximize tau
     subject to
-    tau * speye(n) - X' * diag(d) * X <= 0;
-    X' * diag(d) * X  - speye(n) <= 0;
-    d >= 0;
+    tau * speye(n) - X' * diag(d) * X <= 0; %#ok
+    X' * diag(d) * X  - speye(n) <= 0; %#ok
+    d >= 0; %#ok
     cvx_end
 else
     error("Invalid pre-conditioner type");
 end % End if
 
 D = diag(d);
-% cvx_begin sdp
-% cvx_solver sdpt3
-% variable d(n, 1) nonnegative
-% variable tau
-% maximize tau
-% subject to
-%     X - diag(d) >= 0;
-%     diag(d) - X * tau >= 0;
-% cvx_end
 
 end % End function

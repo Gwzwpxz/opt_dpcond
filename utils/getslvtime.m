@@ -11,7 +11,7 @@ itpcg = 0;
 rng(100);
 
 % Time sparse direct method
-tic; 
+tic;
 [L, ~, pmt] = lchol(A);
 LT = L';
 pinv = 1:n; pinv(pmt) = 1:n;
@@ -25,8 +25,8 @@ end % End for
 tdirect = toc;
 
 % A = full(A);
-% 
-% tic; 
+%
+% tic;
 % L = chol(A)';
 % LT = L';
 % rng(24);
@@ -47,14 +47,14 @@ PA = sparse(PA);
 rhs10 = repmat(rhs, 1, 128);
 tic;
 for i = 1:(ntest / 128)
-[x] = rci(PA, rhs10, tol / 100, maxiter);
+    [x] = rci(PA, rhs10, tol / 100, maxiter);
 end % End for
 tpcg = toc;
 
 if norm(PA * x(1:n, 1) - rhs) > tol * norm(rhs)
     tpcg = 9.9;
 else
-%     keyboard;
+    %     keyboard;
 end % End if
-    
+
 end % End function

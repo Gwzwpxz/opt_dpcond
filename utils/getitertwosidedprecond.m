@@ -13,6 +13,4 @@ fprintf("%10.3e \n", cond(X' * X));
 
 end % End for
 
-
-
 end % End function

@@ -10,6 +10,7 @@ D = ones(m, 1);
 E = ones(n, 1);
 
 for i = 1:maxiter
+    
     dR = sqrt(max(abs(A), [], 2));
     dC = max(abs(A)).^(-1/2);
     R = diag(dR);

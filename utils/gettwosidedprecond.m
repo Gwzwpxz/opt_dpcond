@@ -1,12 +1,9 @@
 function [D1, D2] = gettwosidedprecond(X, ub)
 % Compute two-sided pre-conditioner using SDP
+% We do bisection to locate the condition number
 if nargin == 1
     ub = 1e+06;
 end % End if
-
-[D1, D2] = getitertwosidedprecond(X);
-
-return;
 
 lb = 1;
 feas = false;
