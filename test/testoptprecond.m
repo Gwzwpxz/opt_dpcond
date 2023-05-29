@@ -111,11 +111,11 @@ if reduce_cond < 0
 end % End if
 
 % Check how good optimal pre-conditioner is 
-rdc = reduce_cond / cond_before;
+factor = cond_before / cond_after;
 class = 3;
-if rdc >= 0.8
+if factor >= 5.0
     class = 1;
-elseif rdc >= 0.5
+elseif factor >= 2.0 
     class = 2;
 end % End if
 
@@ -131,9 +131,9 @@ if class <= 2
             [tpcg, tdirect, ~, itpcg] = getslvtime(XTX, XDX, 12800);
         end % End if
         
-        log = sprintf("%d(%s) %30s %6d | %6.3e %6.3e (J: %6.3e) %f T: %f || %3.3f(%d) %3.3f ||| %d %d %d \n",...
+        log = sprintf("%d(%s) %30s %6d | %6.3e %6.3e (J: %6.3e) %f T: %f || %3.3f(%d) %3.3f \n",...
             class, pcond, data.name, size(D, 1), cond_before,...
-            cond_after, cond_jacob, reduce_cond / cond_before,...
+            cond_after, cond_jacob, factor,...
             sdptime, tpcg, itpcg, tdirect);
         
     elseif pcond == "R"
@@ -141,8 +141,10 @@ if class <= 2
         if testsolve
             [tpcg, tdirect, ~, itpcg] = getslvtime(XTX, XDX, 12800);
         end % End if 
-        log = sprintf("%d(%s) %30s %6d | %6.3e %6.3e %f T: %f || %3.3f(%d) %3.3f \n", class, pcond, data.name,...
-            size(D, 1), cond_before, cond_after, reduce_cond / cond_before, sdptime, tpcg, itpcg, tdirect);
+        log = sprintf("%d(%s) %30s %6d | %6.3e %6.3e %f T: %f || %3.3f(%d) %3.3f \n",...
+            class, pcond, data.name, size(D, 1), cond_before,...
+            cond_after, factor,...
+            sdptime, tpcg, itpcg, tdirect);
     else
         
         if testsolve
@@ -155,7 +157,7 @@ if class <= 2
         
         log = sprintf("%d(%s) %30s %6d | %6.3e %6.3e %6.3e T: %f || %3.3f(%d) %3.3f\n",...
             class, pcond, data.name, size(X, 1), cond_before,...
-            cond_after, cond_ruiz, reduce_cond / cond_before,...
+            cond_after, cond_ruiz, factor,...
             tpcg, itpcg, tdirect);
         
     end % End if
