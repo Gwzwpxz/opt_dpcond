@@ -1,0 +1,13 @@
+2(M)            YearPredictionMSD.t     90 | O: 5.521e+06 J: 9.524e+02 R: 1.703e+03 S: 1.721e+07 C: 7.879e+02 || t: 0.289212 facmin: 0.208823 facimp: 7006.415723
+3(M)              abalone_scale.txt      8 | O: 2.419e+03 J: 2.091e+03 R: 2.142e+03 S: 6.122e+03 C: 1.887e+03 || t: 0.073794 facmin: 0.108200 facimp: 0.282146
+1(M)              bodyfat_scale.txt     14 | O: 1.281e+03 J: 1.680e+03 R: 1.951e+03 S: 5.487e+03 C: 7.350e+02 || t: 0.073505 facmin: 1.285578 facimp: 0.742315
+1(M)                     cadata.txt      8 | O: 8.982e+06 J: 7.826e+03 R: 8.341e+03 S: 3.242e+06 C: 3.340e+03 || t: 0.073622 facmin: 1.343147 facimp: 2688.297063
+1(M)             cpusmall_scale.txt     12 | O: 2.000e+04 J: 2.184e+04 R: 2.407e+04 S: 2.363e+04 C: 8.983e+03 || t: 0.072747 facmin: 1.431071 facimp: 1.226972
+3(M)                   eunite2001.t     16 | O: 5.245e+07 J: 1.044e+04 R: 1.634e+04 S: 4.855e+11 C: 9.761e+03 || t: 0.075371 facmin: 0.069679 facimp: 5372.456111
+3(M)                 eunite2001.txt     16 | O: 6.730e+07 J: 4.230e+03 R: 6.908e+03 S: 2.527e+11 C: 3.773e+03 || t: 0.075256 facmin: 0.121262 facimp: 17837.138524
+3(M)              housing_scale.txt     13 | O: 1.539e+02 J: 1.283e+02 R: 1.608e+02 S: 1.926e+02 C: 1.199e+02 || t: 0.074189 facmin: 0.069942 facimp: 0.283699
+3(M)                   mg_scale.txt      6 | O: 1.067e+01 J: 1.068e+01 R: 1.013e+01 S: 1.019e+01 C: 1.009e+01 || t: 0.071190 facmin: 0.003886 facimp: 0.058189
+3(M)                  mpg_scale.txt      7 | O: 1.425e+02 J: 1.312e+02 R: 1.525e+02 S: 2.275e+02 C: 1.307e+02 || t: 0.071380 facmin: 0.004473 facimp: 0.090820
+2(M)                pyrim_scale.txt     27 | O: 4.910e+07 J: 6.364e+03 R: 8.509e+03 S: 2.073e+11 C: 4.746e+03 || t: 0.084252 facmin: 0.340844 facimp: 10344.212923
+3(M)             space_ga_scale.txt      6 | O: 1.061e+03 J: 8.697e+02 R: 1.007e+03 S: 1.481e+03 C: 7.595e+02 || t: 0.072418 facmin: 0.145008 facimp: 0.396255
+3(M)            triazines_scale.txt     60 | O: 2.458e+07 J: 2.807e+07 R: 3.846e+07 S: 5.637e+14 C: 2.715e+07 || t: 0.106916 facmin: 0.033999 facimp: -0.094614

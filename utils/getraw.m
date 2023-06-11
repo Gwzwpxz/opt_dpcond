@@ -2,8 +2,10 @@ function [data] = getraw(X, perturb)
 % Equilibrate and get raw data from X 
 
 XTX = X' * X;
+XTX = XTX / trace(XTX);
 data.X = X;
 data.M = XTX;
+data.M = data.M;
 
 data.perturb = 0.0;
 data.cond = condest(XTX);

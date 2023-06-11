@@ -17,6 +17,7 @@ tdirect = -1.0;
 itpcg = -1;
 
 if pcond == "L"
+    
     M = data.M;
     cond_before = cond(full(M), 2);
     if solver == "cvx"
@@ -43,6 +44,121 @@ if pcond == "L"
     PM = sqrt(D) \ (sqrt(D) \ full(data.M))';
     cond_after = cond(PM);
     reduce_cond = cond_before - cond_after;
+    
+elseif pcond == "M"
+    % Mixed pre-conditioner
+    M = full(data.M);
+    
+%     fprintf("%30s Sp: %6.3e \n", data.name, cond_spinv);
+%     return;
+    
+    cond_before = cond(full(M), 2);
+    
+    % Two base pre-conditioners
+    Ddiag = diag(diag(M));
+    [Druiz, Dtmp] = ruizscale(M, 100); %#ok
+    MDiag = sqrt(Ddiag) \ (sqrt(Ddiag) \ full(data.M))';
+    Mruiz = Druiz * M * Druiz;
+    Dspinv = diag(diag(M) ./ sum(M.^2, 2));
+    Mspinv = sqrt(Dspinv) * M * sqrt(Dspinv);
+    cond_spinv = cond(Mspinv);
+    cond_jacob = cond(MDiag);
+    cond_ruiz = cond(Mruiz);
+    
+    Druiz = diag(1./diag(Druiz.^2));
+    Dspinv = diag(1./diag(Dspinv));
+    
+    try
+        [D, cvx_time] = getoptcombprecond(M, Ddiag, Druiz, Dspinv);
+    catch
+        return;
+    end % End try
+    
+    Mcomb = sqrt(D) \ (sqrt(D) \ M)';
+    
+    try 
+        cond_comb = cond(Mcomb);
+    catch
+        return;
+    end % End try
+    
+    bench = min([cond_jacob, cond_ruiz, cond_spinv]);
+    
+    factor = bench / cond_comb;
+    
+    class = 3;
+    if factor >= 2.0
+        class = 1;
+    elseif factor >= 1.2
+        class = 2;
+    end % End if
+        
+    % Numerical issue happens
+    if factor <= 1.0
+        return;
+    end % End if
+    
+    % Test conjugate gradient
+    if testsolve
+        
+        tol = 1e-04;
+        maxit = size(Mcomb, 1) * 10;
+        rng(maxit);
+        
+        rhs = randn(size(Mcomb, 1), 1);
+        
+        Mcomb = sparse(Mcomb) / trace(Mcomb);
+        Mruiz = sparse(Mruiz) / trace(Mruiz);
+        MDiag = sparse(MDiag) / trace(MDiag);
+        Mspinv = sparse(Mspinv) / trace(Mspinv);
+        
+        [xcomb, flagcomb, rescomb, itcomb] = pcg(Mcomb, sqrt(D) \ rhs, tol, maxit); %#ok
+        [xruiz, flagruiz, resruiz, itruiz] = pcg(Mruiz, sqrt(Druiz) \ rhs, tol, maxit); %#ok
+        [xjacob, flagjacob, resjacob, itjacob] = pcg(MDiag, sqrt(Ddiag) \ rhs, tol, maxit); %#ok
+        [xsp, flagsp, ressp, itsp] = pcg(Mspinv, sqrt(Dspinv) \ rhs, tol, maxit); %#ok
+        [xorig, flagorig, resorig, itorig] = pcg(M, rhs, tol, maxit); %#ok
+        
+        if flagcomb ~= 0 
+            itcomb = maxit;
+        end % End if 
+        
+        if flagruiz ~= 0 
+            itruiz = maxit;
+        end % End if 
+        
+        if flagjacob ~= 0 
+            itjacob = maxit;
+        end % End if 
+        
+        if flagsp ~= 0 
+            itsp = maxit;
+        end % End if 
+        
+        if flagorig ~= 0 
+            itorig = maxit;
+        end % End if 
+        
+        if itcomb == min([itcomb, itruiz, itjacob, itsp, itorig])
+            status = "*";
+        else
+            status = "x";
+        end % End if
+        
+        fprintf("%d(%s) %30s          O: %4d | J: %4d | R: %4d | S: %4d | C: %4d | %s \n",...
+            class, "M", data.name, itorig, itjacob, itruiz, itsp, itcomb, status);
+        
+    end % End if
+    
+    log = sprintf("%d(%s) %30s %6d | O: %6.3e J: %6.3e R: %6.3e S: %6.3e C: %6.3e || t: %f facmin: %f facimp: %f\n", class, "M",...
+        data.name, size(D, 1), cond_before, cond_jacob, cond_ruiz, cond_spinv, cond_comb, cvx_time, factor - 1, cond_before / cond_comb - 1);
+    
+    if isempty(fileID)
+        fprintf(log);
+    else
+        fprintf(fileID, log);
+    end % End if
+    
+    return;
     
 elseif pcond == "R"
     
@@ -119,7 +235,7 @@ elseif factor >= 2.0
     class = 2;
 end % End if
 
-if class <= 2
+if class <= 3
     
     if pcond == "L"
         % Compare with diagonal preconditioner
