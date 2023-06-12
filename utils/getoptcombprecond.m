@@ -11,10 +11,11 @@ if nargin == 4
     D3 = D3 / trace(D3);
     
     cvx_begin sdp quiet
+%     cvx_precision high
     cvx_solver mosek
-    variable beta1 % nonnegative
-    variable beta2 % nonnegative
-    variable beta3 % nonnegative
+    variable beta1
+    variable beta2
+    variable beta3
     variable tau
     maximize tau
     subject to

@@ -59,17 +59,20 @@ elseif pcond == "M"
     [Druiz, Dtmp] = ruizscale(M, 100); %#ok
     MDiag = sqrt(Ddiag) \ (sqrt(Ddiag) \ full(data.M))';
     Mruiz = Druiz * M * Druiz;
-    Dspinv = diag(diag(M) ./ sum(M.^2, 2));
-    Mspinv = sqrt(Dspinv) * M * sqrt(Dspinv);
-    cond_spinv = cond(Mspinv);
+%     Dspinv = diag(diag(M) ./ sum(M.^2, 2));
+%     Mspinv = sqrt(Dspinv) * M * sqrt(Dspinv);
+%     cond_spinv = cond(Mspinv);
     cond_jacob = cond(MDiag);
     cond_ruiz = cond(Mruiz);
     
     Druiz = diag(1./diag(Druiz.^2));
-    Dspinv = diag(1./diag(Dspinv));
+%     Dspinv = diag(1./diag(Dspinv));
     
     try
-        [D, cvx_time] = getoptcombprecond(M, Ddiag, Druiz, Dspinv);
+        [D, cvx_time] = getoptcombprecond(M, Ddiag, Druiz, eye(size(M, 1)));
+        if min(diag(D)) < 0
+            error("!");
+        end % End if 
     catch
         return;
     end % End try
@@ -82,7 +85,7 @@ elseif pcond == "M"
         return;
     end % End try
     
-    bench = min([cond_jacob, cond_ruiz, cond_spinv]);
+    bench = min([cond_jacob, cond_ruiz, cond_before]);
     
     factor = bench / cond_comb;
     
@@ -99,7 +102,7 @@ elseif pcond == "M"
     end % End if
     
     % Test conjugate gradient
-    if testsolve
+    if testsolve && class <= 2
         
         tol = 1e-04;
         maxit = size(Mcomb, 1) * 10;
@@ -110,12 +113,11 @@ elseif pcond == "M"
         Mcomb = sparse(Mcomb) / trace(Mcomb);
         Mruiz = sparse(Mruiz) / trace(Mruiz);
         MDiag = sparse(MDiag) / trace(MDiag);
-        Mspinv = sparse(Mspinv) / trace(Mspinv);
         
         [xcomb, flagcomb, rescomb, itcomb] = pcg(Mcomb, sqrt(D) \ rhs, tol, maxit); %#ok
         [xruiz, flagruiz, resruiz, itruiz] = pcg(Mruiz, sqrt(Druiz) \ rhs, tol, maxit); %#ok
         [xjacob, flagjacob, resjacob, itjacob] = pcg(MDiag, sqrt(Ddiag) \ rhs, tol, maxit); %#ok
-        [xsp, flagsp, ressp, itsp] = pcg(Mspinv, sqrt(Dspinv) \ rhs, tol, maxit); %#ok
+        % [xsp, flagsp, ressp, itsp] = pcg(Mspinv, sqrt(Dspinv) \ rhs, tol, maxit); %#ok
         [xorig, flagorig, resorig, itorig] = pcg(M, rhs, tol, maxit); %#ok
         
         if flagcomb ~= 0 
@@ -130,27 +132,27 @@ elseif pcond == "M"
             itjacob = maxit;
         end % End if 
         
-        if flagsp ~= 0 
-            itsp = maxit;
-        end % End if 
+%         if flagsp ~= 0 
+%             itsp = maxit;
+%         end % End if 
         
         if flagorig ~= 0 
             itorig = maxit;
         end % End if 
         
-        if itcomb == min([itcomb, itruiz, itjacob, itsp, itorig])
+        if itcomb == min([itcomb, itruiz, itjacob, itorig])
             status = "*";
         else
             status = "x";
         end % End if
         
-        fprintf("%d(%s) %30s          O: %4d | J: %4d | R: %4d | S: %4d | C: %4d | %s \n",...
-            class, "M", data.name, itorig, itjacob, itruiz, itsp, itcomb, status);
+        fprintf("%d(%s) %30s          O: %4d | J: %4d | R: %4d | C: %4d | %s \n",...
+            class, "M", data.name, itorig, itjacob, itruiz, itcomb, status);
         
     end % End if
     
-    log = sprintf("%d(%s) %30s %6d | O: %6.3e J: %6.3e R: %6.3e S: %6.3e C: %6.3e || t: %f facmin: %f facimp: %f\n", class, "M",...
-        data.name, size(D, 1), cond_before, cond_jacob, cond_ruiz, cond_spinv, cond_comb, cvx_time, factor - 1, cond_before / cond_comb - 1);
+    log = sprintf("%d(%s) %30s %6d | O: %6.3e J: %6.3e R: %6.3e C: %6.3e || t: %f facmin: %f facimp: %f\n", class, "M",...
+        data.name, size(D, 1), cond_before, cond_jacob, cond_ruiz, cond_comb, cvx_time, factor - 1, cond_before / cond_comb - 1);
     
     if isempty(fileID)
         fprintf(log);
